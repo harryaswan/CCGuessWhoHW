@@ -1,0 +1,58 @@
+.person {
+    display: inline-block;
+}
+.person.visible {
+    background: green;
+}
+.person.not-visible {
+    background: red;
+}
+
+.cards, .questions, .guess, .answer{
+    width: 80%;
+    margin: auto;
+}
+
+.card {
+  position: relative;
+  float: left;
+  padding-bottom: 135px;
+  width: 100px;
+  text-align: center;
+}
+
+.card__front, .card__back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.card__front, .card__back {
+    background-color: #FFFFFF;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  -webkit-transition: -webkit-transform 0.3s;
+          transition: transform 0.3s;
+}
+
+.card__back {
+  -webkit-transform: rotateY(-180deg);
+          transform: rotateY(-180deg);
+}
+
+img {
+    /*height: 100%;*/
+    width: 100%;
+}
+
+.card.effect__click.flipped .card__front {
+  -webkit-transform: rotateY(-180deg);
+          transform: rotateY(-180deg);
+}
+
+.card.effect__click.flipped .card__back {
+  -webkit-transform: rotateY(0);
+          transform: rotateY(0);
+}

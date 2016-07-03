@@ -1,0 +1,6 @@
+[
+    {"name": "Harry", "age":20, "hair":"Fair", "gender":"Male", "glasses":true, "facial_hair":false},
+    {"name": "Seumus", "age":27, "hair":"Dark", "gender":"Male", "glasses":true, "facial_hair":true},
+    {"name": "Zak", "age":30, "hair":"Fair", "gender":"Male", "glasses":false, "facial_hair":true},
+    {"name": "Becky", "age":28, "hair":"Dark", "gender":"Female", "glasses":false, "facial_hair":false}
+]
