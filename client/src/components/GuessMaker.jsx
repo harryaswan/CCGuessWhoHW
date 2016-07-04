@@ -12,7 +12,6 @@ var GuessMaker = React.createClass({
     render: function() {
         var guessSelect = null;
         if (this.props.data) {
-            console.log('data',this.props.data);
             var options = this.props.data.map(function(person) {
                 return (<option key={person.name} value={person.name}>{person.name}</option>)
             });
@@ -28,6 +27,7 @@ var GuessMaker = React.createClass({
     },
     selectName: function(e) {
         this.setState({selectedName: e.target.value});
+        // this.props.resetAnswer();
     },
     makeGuess: function() {
         this.props.makeGuess(this.state.selectedName);

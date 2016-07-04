@@ -1,3 +1,7 @@
+body {
+    background: #5577c6;
+    color: #2f4985;
+}
 .person {
     display: inline-block;
 }
@@ -8,9 +12,21 @@
     background: red;
 }
 
+.questions {
+    /*padding-top: 40px;*/
+}
+
+.cards {
+    height: 410px;
+    background: #FFFFFF;
+    padding: 5px;
+    border-radius: 5px;
+}
+
 .cards, .questions, .guess, .answer{
-    width: 80%;
+    width: 800px;
     margin: auto;
+    text-align: center;
 }
 
 .card {
@@ -45,14 +61,49 @@
 img {
     /*height: 100%;*/
     width: 100%;
+    height: 135px;
 }
 
-.card.effect__click.flipped .card__front {
+.card.flipped .card__front {
   -webkit-transform: rotateY(-180deg);
           transform: rotateY(-180deg);
 }
 
-.card.effect__click.flipped .card__back {
+.card.flipped .card__back {
   -webkit-transform: rotateY(0);
           transform: rotateY(0);
+}
+
+
+.answer {
+    height: 30px;
+    font-size: 30px;
+    padding: 15px;
+    text-align: center;
+}
+.answer p {
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+}
+.answer.show {
+    visibility: visible;
+}
+
+.answer.hide {
+    visibility: hidden;
+}
+
+.green {
+    text-shadow: -0.5px 0.5px 2px #86c355, 0.5px -0.5px #86c355, -2px 2px 2px #fff, 2px -2px 2px #fff, -2px -2px 2px #fff, 2px 2px 2px #fff;
+}
+.red {
+    text-shadow: -0.5px 0.5px 2px #c0475c, 0.5px -0.5px #c0475c, -2px 2px 2px #fff, 2px -2px 2px #fff, -2px -2px 2px #fff, 2px 2px 2px #fff;
+}
+
+select {
+    background: #223a61;
+    color: #fff;
+    font-size: 25px;
+    margin-bottom: 10px;
 }

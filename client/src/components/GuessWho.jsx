@@ -21,9 +21,9 @@ var GuessWho = React.createClass({
         return (
             <div>
                 <PeopleDisplay data={this.state.data} alterData={this.alterData} />
-                <QuestionMaker data={this.state.data} askQuestion={this.askQuestion} resetAnswer={this.resetAnswer}/>
-                <GuessMaker data={this.getVisiblePeople()} makeGuess={this.makeGuess}/>
                 <AnswerDisplay answer={this.state.answer} win={this.state.win} gameReset={this.gameReset} />
+                <QuestionMaker data={this.state.data} askQuestion={this.askQuestion} resetAnswer={this.resetAnswer}/>
+                <GuessMaker data={this.getVisiblePeople()} makeGuess={this.makeGuess} resetAnswer={this.resetAnswer}/>
             </div>
         );
     },
@@ -84,8 +84,6 @@ var GuessWho = React.createClass({
     },
     askQuestion: function(question) {
         var person = this.getSelectedPerson();
-        console.log('selected person', person);
-        console.log('sumbitted answer', question);
         var answer = person[question.property] == question.value;
         var newData = this.state.data.map(function(per) {
             if (answer) {
@@ -102,7 +100,8 @@ var GuessWho = React.createClass({
         this.setState({data: newData, answer: answer, win:null});
     },
     resetAnswer: function() {
-        this.setState({answer: null});
+        console.log('reset');
+        this.setState({answer: null, win: null});
     },
     getSelectedPerson: function() {
         return this.state.data[this.state.selectedPerson];
@@ -128,7 +127,6 @@ var GuessWho = React.createClass({
         this.gameSetup(this.state.data);
     },
     gameSetup: function(data) {
-        console.log('data:', data);
         var randomIndex = this.selectRandomPerson(this.alterData(data, "visible", true, true));
         this.setState({selectedPerson: randomIndex, answer: null, win: null});
     }

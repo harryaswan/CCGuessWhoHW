@@ -19719,9 +19719,9 @@
 	            'div',
 	            null,
 	            React.createElement(PeopleDisplay, { data: this.state.data, alterData: this.alterData }),
+	            React.createElement(AnswerDisplay, { answer: this.state.answer, win: this.state.win, gameReset: this.gameReset }),
 	            React.createElement(QuestionMaker, { data: this.state.data, askQuestion: this.askQuestion, resetAnswer: this.resetAnswer }),
-	            React.createElement(GuessMaker, { data: this.getVisiblePeople(), makeGuess: this.makeGuess }),
-	            React.createElement(AnswerDisplay, { answer: this.state.answer, win: this.state.win, gameReset: this.gameReset })
+	            React.createElement(GuessMaker, { data: this.getVisiblePeople(), makeGuess: this.makeGuess, resetAnswer: this.resetAnswer })
 	        );
 	    },
 	    callAJAX: function callAJAX(type, url) {
@@ -19781,8 +19781,6 @@
 	    },
 	    askQuestion: function askQuestion(question) {
 	        var person = this.getSelectedPerson();
-	        console.log('selected person', person);
-	        console.log('sumbitted answer', question);
 	        var answer = person[question.property] == question.value;
 	        var newData = this.state.data.map(function (per) {
 	            if (answer) {
@@ -19799,7 +19797,8 @@
 	        this.setState({ data: newData, answer: answer, win: null });
 	    },
 	    resetAnswer: function resetAnswer() {
-	        this.setState({ answer: null });
+	        console.log('reset');
+	        this.setState({ answer: null, win: null });
 	    },
 	    getSelectedPerson: function getSelectedPerson() {
 	        return this.state.data[this.state.selectedPerson];
@@ -19825,7 +19824,6 @@
 	        this.gameSetup(this.state.data);
 	    },
 	    gameSetup: function gameSetup(data) {
-	        console.log('data:', data);
 	        var randomIndex = this.selectRandomPerson(this.alterData(data, "visible", true, true));
 	        this.setState({ selectedPerson: randomIndex, answer: null, win: null });
 	    }
@@ -19906,12 +19904,10 @@
 	
 	
 	    render: function render() {
-	
-	        console.log(this.props);
-	
 	        var visible = this.props.data.visible ? "visible" : "not-visible";
 	
 	        var alterData = function (e) {
+	            console.log('clicky');
 	            this.props.alterData(this.props.data, "visible", !this.props.data.visible, true);
 	        }.bind(this);
 	
@@ -19922,7 +19918,7 @@
 	
 	        return React.createElement(
 	            'div',
-	            { className: 'card effect__click' + flipped, onClick: alterData },
+	            { className: 'card ' + flipped, onClick: alterData },
 	            React.createElement(
 	                'div',
 	                { className: 'card__front' },
@@ -20098,7 +20094,7 @@
 	
 	        return React.createElement(
 	            "div",
-	            { className: "answer" },
+	            { className: "answer" + (answer ? " show" : " hide") + (this.props.win || this.props.answer ? " green" : " red") },
 	            answer
 	        );
 	    }
@@ -20270,6 +20266,7 @@
 	        var chars = this.generateChars(this.props.data);
 	        console.log('chars', chars);
 	        this.setState({ selectedProperty: e.target.value, selectedValue: chars[e.target.value][0] });
+	        this.props.resetAnswer();
 	    },
 	
 	    handleValSelect: function handleValSelect(e) {
@@ -20282,6 +20279,7 @@
 	            val = false;
 	        }
 	        this.setState({ selectedValue: val });
+	        this.props.resetAnswer();
 	    },
 	    handleAskQuestion: function handleAskQuestion() {
 	        this.props.askQuestion({ property: this.state.selectedProperty, value: this.state.selectedValue });
@@ -20295,12 +20293,12 @@
 /* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var React = __webpack_require__(1);
 	
 	var GuessMaker = React.createClass({
-	    displayName: 'GuessMaker',
+	    displayName: "GuessMaker",
 	
 	    getInitialState: function getInitialState() {
 	        return {
@@ -20313,30 +20311,30 @@
 	    render: function render() {
 	        var guessSelect = null;
 	        if (this.props.data) {
-	            console.log('data', this.props.data);
 	            var options = this.props.data.map(function (person) {
 	                return React.createElement(
-	                    'option',
+	                    "option",
 	                    { key: person.name, value: person.name },
 	                    person.name
 	                );
 	            });
 	            guessSelect = React.createElement(
-	                'select',
+	                "select",
 	                { onChange: this.selectName },
 	                options
 	            );
 	        }
 	
 	        return React.createElement(
-	            'div',
-	            { className: 'guess' },
+	            "div",
+	            { className: "guess" },
 	            guessSelect,
-	            React.createElement('input', { type: 'button', value: 'Guess!', onClick: this.makeGuess })
+	            React.createElement("input", { type: "button", value: "Guess!", onClick: this.makeGuess })
 	        );
 	    },
 	    selectName: function selectName(e) {
 	        this.setState({ selectedName: e.target.value });
+	        // this.props.resetAnswer();
 	    },
 	    makeGuess: function makeGuess() {
 	        this.props.makeGuess(this.state.selectedName);

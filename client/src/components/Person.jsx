@@ -4,12 +4,10 @@ const Power = require('./functions.jsx');
 var Person = React.createClass({
 
     render: function() {
-
-        console.log(this.props);
-
         var visible = this.props.data.visible ? "visible" : "not-visible";
 
         var alterData = function(e) {
+            console.log('clicky');
             this.props.alterData(this.props.data, "visible", !this.props.data.visible, true);
         }.bind(this);
 
@@ -19,7 +17,7 @@ var Person = React.createClass({
         }
 
         return (
-            <div className={`card effect__click${flipped}`} onClick={alterData}>
+            <div className={`card ${flipped}`} onClick={alterData}>
               <div className="card__front">
                 <span className="card__text"><img src={`imgs/pulpfiction/${Power.addUnderscore(this.props.data.name.toLowerCase())}.png`} /></span>
               </div>

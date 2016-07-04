@@ -77,6 +77,7 @@ var QuestionMaker = React.createClass({
         var chars = this.generateChars(this.props.data);
         console.log('chars', chars);
         this.setState({selectedProperty: e.target.value, selectedValue: chars[e.target.value][0]});
+        this.props.resetAnswer();
     },
 
     handleValSelect: function(e) {
@@ -89,6 +90,7 @@ var QuestionMaker = React.createClass({
             val = false;
         }
         this.setState({selectedValue: val});
+        this.props.resetAnswer();
     },
     handleAskQuestion: function() {
         this.props.askQuestion({property: this.state.selectedProperty, value:this.state.selectedValue});

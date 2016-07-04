@@ -12,7 +12,7 @@ var AnswerDisplay = React.createClass({
         }
 
         return (
-            <div className="answer">
+            <div className={`answer${answer ? " show" : " hide"}${this.props.win||this.props.answer ? " green" : " red"}`}>
                 {answer}
             </div>
         );
