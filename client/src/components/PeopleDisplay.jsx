@@ -9,7 +9,7 @@ var PeopleDisplay = React.createClass({
         if (this.props.data) {
             people = [];
             for (var person of this.props.data) {
-                people.push(<Person key={person.name} data={person} alterData={this.props.alterData}/>);
+                people.push(<Person key={person.name} data={person} alterData={this.props.alterData} db={this.props.db}/>);
             }
         }
 

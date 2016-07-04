@@ -19698,6 +19698,7 @@
 	var QuestionMaker = __webpack_require__(165);
 	var GuessMaker = __webpack_require__(166);
 	var AnswerDisplay = __webpack_require__(164);
+	var DBSelector = __webpack_require__(167);
 	
 	var GuessWho = React.createClass({
 	    displayName: 'GuessWho',
@@ -19718,7 +19719,8 @@
 	        return React.createElement(
 	            'div',
 	            null,
-	            React.createElement(PeopleDisplay, { data: this.state.data, alterData: this.alterData }),
+	            React.createElement(DBSelector, { selectDB: this.selectDB }),
+	            React.createElement(PeopleDisplay, { data: this.state.data, alterData: this.alterData, db: this.state.db }),
 	            React.createElement(AnswerDisplay, { answer: this.state.answer, win: this.state.win, gameReset: this.gameReset }),
 	            React.createElement(QuestionMaker, { data: this.state.data, askQuestion: this.askQuestion, resetAnswer: this.resetAnswer }),
 	            React.createElement(GuessMaker, { data: this.getVisiblePeople(), makeGuess: this.makeGuess, resetAnswer: this.resetAnswer })
@@ -19746,9 +19748,10 @@
 	    grabData: function grabData() {
 	        this.callAJAX("get", '/api/people?db=' + this.state.db).then(function (data) {
 	            this.gameSetup(data);
-	        }.bind(this)).catch(function (error) {
-	            console.error(error);
-	        });
+	        }.bind(this));
+	        // .catch(function(error) {
+	        //     console.error(error);
+	        // });
 	    },
 	    alterData: function alterData(persons, property, setVal, actualSet) {
 	        if (persons.length > 0) {
@@ -19797,7 +19800,6 @@
 	        this.setState({ data: newData, answer: answer, win: null });
 	    },
 	    resetAnswer: function resetAnswer() {
-	        console.log('reset');
 	        this.setState({ answer: null, win: null });
 	    },
 	    getSelectedPerson: function getSelectedPerson() {
@@ -19826,6 +19828,9 @@
 	    gameSetup: function gameSetup(data) {
 	        var randomIndex = this.selectRandomPerson(this.alterData(data, "visible", true, true));
 	        this.setState({ selectedPerson: randomIndex, answer: null, win: null });
+	    },
+	    selectDB: function selectDB(dbName) {
+	        this.setState({ db: dbName }, this.grabData);
 	    }
 	});
 	
@@ -19861,7 +19866,7 @@
 	                for (var _iterator = this.props.data[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	                    var person = _step.value;
 	
-	                    people.push(React.createElement(Person, { key: person.name, data: person, alterData: this.props.alterData }));
+	                    people.push(React.createElement(Person, { key: person.name, data: person, alterData: this.props.alterData, db: this.props.db }));
 	                }
 	            } catch (err) {
 	                _didIteratorError = true;
@@ -19925,7 +19930,7 @@
 	                React.createElement(
 	                    'span',
 	                    { className: 'card__text' },
-	                    React.createElement('img', { src: 'imgs/pulpfiction/' + Power.addUnderscore(this.props.data.name.toLowerCase()) + '.png' })
+	                    React.createElement('img', { src: 'imgs/' + this.props.db + '/' + Power.addUnderscore(this.props.data.name.toLowerCase()) + '.png' })
 	                )
 	            ),
 	            React.createElement(
@@ -20116,7 +20121,6 @@
 	    displayName: 'QuestionMaker',
 	
 	    getInitialState: function getInitialState() {
-	        var data = this.props.data;
 	        return {
 	            selectedProperty: null,
 	            selectedValue: null
@@ -20254,7 +20258,10 @@
 	        );
 	    },
 	    fillSelected: function fillSelected(data) {
-	        if (Object.keys(data).length > 0 && this.state.selectedProperty === null) {
+	
+	        // if (Object.keys(data).length > 0 && this.state.selectedProperty === null) {
+	        if (Object.keys(data).length > 0 && (this.state.selectedProperty === null || Object.keys(data).indexOf(this.state.selectedProperty) === -1)) {
+	            console.log('make selects');
 	            this.setState({
 	                selectedProperty: Object.keys(data)[0],
 	                selectedValue: data[Object.keys(data)[0]][0]
@@ -20264,7 +20271,6 @@
 	    handlePropSelect: function handlePropSelect(e) {
 	        e.preventDefault();
 	        var chars = this.generateChars(this.props.data);
-	        console.log('chars', chars);
 	        this.setState({ selectedProperty: e.target.value, selectedValue: chars[e.target.value][0] });
 	        this.props.resetAnswer();
 	    },
@@ -20343,6 +20349,43 @@
 	});
 	
 	module.exports = GuessMaker;
+
+/***/ },
+/* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	
+	var DBSelector = React.createClass({
+	    displayName: "DBSelector",
+	
+	
+	    render: function render() {
+	        return React.createElement(
+	            "select",
+	            { className: "db-selector", onChange: this.selectDB },
+	            React.createElement(
+	                "option",
+	                { value: "pulpfiction" },
+	                "Pulp Fiction"
+	            ),
+	            React.createElement(
+	                "option",
+	                { value: "sample" },
+	                "Sample"
+	            )
+	        );
+	    },
+	    selectDB: function selectDB(e) {
+	        console.log('name', e.target.value);
+	        this.props.selectDB(e.target.value);
+	    }
+	
+	});
+	
+	module.exports = DBSelector;
 
 /***/ }
 /******/ ]);

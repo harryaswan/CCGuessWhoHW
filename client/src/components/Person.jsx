@@ -19,7 +19,7 @@ var Person = React.createClass({
         return (
             <div className={`card ${flipped}`} onClick={alterData}>
               <div className="card__front">
-                <span className="card__text"><img src={`imgs/pulpfiction/${Power.addUnderscore(this.props.data.name.toLowerCase())}.png`} /></span>
+                <span className="card__text"><img src={`imgs/${this.props.db}/${Power.addUnderscore(this.props.data.name.toLowerCase())}.png`} /></span>
               </div>
               <div className="card__back">
                 <span className="card__text"><img src={`imgs/card_back.jpg`} /></span>

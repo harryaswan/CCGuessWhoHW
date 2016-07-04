@@ -3,7 +3,6 @@ var Power = require('./functions.jsx');
 
 var QuestionMaker = React.createClass({
     getInitialState: function() {
-        var data = this.props.data;
         return {
             selectedProperty: null,
             selectedValue: null
@@ -64,7 +63,10 @@ var QuestionMaker = React.createClass({
         );
     },
     fillSelected: function(data) {
-        if (Object.keys(data).length > 0 && this.state.selectedProperty === null) {
+
+        // if (Object.keys(data).length > 0 && this.state.selectedProperty === null) {
+        if (Object.keys(data).length > 0 && (this.state.selectedProperty === null || Object.keys(data).indexOf(this.state.selectedProperty) === -1)) {
+            console.log('make selects');
             this.setState({
                 selectedProperty: Object.keys(data)[0],
                 selectedValue: data[Object.keys(data)[0]][0]
@@ -75,7 +77,6 @@ var QuestionMaker = React.createClass({
     handlePropSelect: function(e) {
         e.preventDefault();
         var chars = this.generateChars(this.props.data);
-        console.log('chars', chars);
         this.setState({selectedProperty: e.target.value, selectedValue: chars[e.target.value][0]});
         this.props.resetAnswer();
     },

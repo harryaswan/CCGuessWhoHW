@@ -3,6 +3,7 @@ const PeopleDisplay = require('./PeopleDisplay.jsx')
 const QuestionMaker = require('./QuestionMaker.jsx')
 const GuessMaker = require('./GuessMaker.jsx')
 const AnswerDisplay = require('./AnswerDisplay.jsx')
+const DBSelector = require('./DBSelector.jsx')
 
 var GuessWho = React.createClass({
     getInitialState: function() {
@@ -20,7 +21,8 @@ var GuessWho = React.createClass({
     render: function() {
         return (
             <div>
-                <PeopleDisplay data={this.state.data} alterData={this.alterData} />
+                <DBSelector selectDB={this.selectDB} />
+                <PeopleDisplay data={this.state.data} alterData={this.alterData} db={this.state.db}/>
                 <AnswerDisplay answer={this.state.answer} win={this.state.win} gameReset={this.gameReset} />
                 <QuestionMaker data={this.state.data} askQuestion={this.askQuestion} resetAnswer={this.resetAnswer}/>
                 <GuessMaker data={this.getVisiblePeople()} makeGuess={this.makeGuess} resetAnswer={this.resetAnswer}/>
@@ -49,9 +51,9 @@ var GuessWho = React.createClass({
         .then(function(data) {
             this.gameSetup(data);
         }.bind(this))
-        .catch(function(error) {
-            console.error(error);
-        });
+        // .catch(function(error) {
+        //     console.error(error);
+        // });
     },
     alterData: function(persons, property, setVal, actualSet) {
         if (persons.length > 0) {
@@ -100,7 +102,6 @@ var GuessWho = React.createClass({
         this.setState({data: newData, answer: answer, win:null});
     },
     resetAnswer: function() {
-        console.log('reset');
         this.setState({answer: null, win: null});
     },
     getSelectedPerson: function() {
@@ -129,6 +130,9 @@ var GuessWho = React.createClass({
     gameSetup: function(data) {
         var randomIndex = this.selectRandomPerson(this.alterData(data, "visible", true, true));
         this.setState({selectedPerson: randomIndex, answer: null, win: null});
+    },
+    selectDB: function(dbName) {
+        this.setState({db: dbName}, this.grabData);
     }
 });
 
